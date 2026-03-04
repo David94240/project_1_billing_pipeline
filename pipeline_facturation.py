@@ -39,6 +39,10 @@ def clean_data(df):
     # 6. Ajout d'une colonne calcul du montant_TTC
     df['montant_TTC'] = df['montant_HT'] * (1 + df['taux_TVA']).round(2)
 
+    # 7. Validation : montant_TTC doit être > montant_HT
+    assert all(df['montant_TTC'] > df['montant_HT']), "Erreur : montant_TTC <= montant_HT pour certaines lignes."
+    logging.info("Validation réussie : montant_TTC > montant_HT pour toutes les lignes.")
+
     return df
 
 if __name__ == "__main__":
