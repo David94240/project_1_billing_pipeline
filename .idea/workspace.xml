@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="58ecd3af-0f96-437f-b7f9-7ba8faa0fb9c" name="Changes" comment="add   # 6. Ajout d'une colonne calcul du montant_TTC">
+    <list default="true" id="58ecd3af-0f96-437f-b7f9-7ba8faa0fb9c" name="Changes" comment="Commit du system d'assertations">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/factures_brutes.csv" beforeDir="false" afterPath="$PROJECT_DIR$/factures_brutes.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pipeline_facturation.py" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline_facturation.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -113,7 +115,15 @@
       <option name="project" value="LOCAL" />
       <updated>1772622344184</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Commit du system d'assertations">
+      <option name="closed" value="true" />
+      <created>1772624157114</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1772624157114</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -131,6 +141,7 @@
     <MESSAGE value="Premier commint test" />
     <MESSAGE value="import pandas" />
     <MESSAGE value="add   # 6. Ajout d'une colonne calcul du montant_TTC" />
-    <option name="LAST_COMMIT_MESSAGE" value="add   # 6. Ajout d'une colonne calcul du montant_TTC" />
+    <MESSAGE value="Commit du system d'assertations" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit du system d'assertations" />
   </component>
 </project>
