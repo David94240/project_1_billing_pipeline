@@ -53,7 +53,7 @@ def clean_data(df):
     df = df.drop_duplicates(subset=['id_facture'], keep='first')
     logging.info(f"Suppression de {doublons} doublons sur id_facture.")
 
-    # 6. Ajout d'une colonne calcul du montant_TTC
+    # 6. Ajout d'une colonn calcul du montant_TTC
     df['montant_TTC'] = df['montant_HT'] * (1 + df['taux_TVA']).round(2)
 
     # 7. Validation : montant_TTC doit être > montant_HT
