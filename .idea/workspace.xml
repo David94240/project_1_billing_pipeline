@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="58ecd3af-0f96-437f-b7f9-7ba8faa0fb9c" name="Changes" comment="Ajout de l'arborescence">
-      <change afterPath="$PROJECT_DIR$/dags/pipeline_facturation_dag.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/factures_brutes.csv" afterDir="false" />
+    <list default="true" id="58ecd3af-0f96-437f-b7f9-7ba8faa0fb9c" name="Changes" comment="Modification de l'arborescence&#10;Ajout de Airflow et Docker">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Facture/factures_brutes.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Script python manuel/factures_brutes.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Facture/pipeline_facturation.py" beforeDir="false" afterPath="$PROJECT_DIR$/Script python manuel/pipeline_facturation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Facture/test_pipeline_facturation.py" beforeDir="false" afterPath="$PROJECT_DIR$/Script python manuel/test_pipeline_facturation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -167,7 +163,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773048576483</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Modification de l'arborescence&#10;Ajout de Airflow et Docker">
+      <option name="closed" value="true" />
+      <created>1773053782536</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1773053782536</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -193,6 +197,7 @@
     <MESSAGE value="Ajout des tests" />
     <MESSAGE value="Ajout des tests + commentaires" />
     <MESSAGE value="Ajout de l'arborescence" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajout de l'arborescence" />
+    <MESSAGE value="Modification de l'arborescence&#10;Ajout de Airflow et Docker" />
+    <option name="LAST_COMMIT_MESSAGE" value="Modification de l'arborescence&#10;Ajout de Airflow et Docker" />
   </component>
 </project>
