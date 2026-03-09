@@ -32,6 +32,9 @@ def test_normalize_code_acte(sample_data):
     assert all(df_clean['code_acte'].str.isupper()), "Certains codes ne sont pas en majuscules."
 
 # Test 4 : Vérifie que les doublons sur id_facture sont supprimés
+# On le lance indépendament des autres avec la commande :
+# pytest test_pipeline_facturation.py::test_remove_duplicates -v
+
 def test_remove_duplicates():
     # Créer un DataFrame avec uniquement des lignes valides
     data = {
