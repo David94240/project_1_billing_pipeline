@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="58ecd3af-0f96-437f-b7f9-7ba8faa0fb9c" name="Changes" comment="Modification de l'arborescence&#10;MAJ de Airflow et Docker">
-      <change afterPath="$PROJECT_DIR$/dags/pipeline_facturation_dag_with_taskXcom.py" afterDir="false" />
+    <list default="true" id="58ecd3af-0f96-437f-b7f9-7ba8faa0fb9c" name="Changes" comment="Premier DAG simple MAJ&#10;Second DAG avec prise en charge de task et séparation pour une gestion des logs plus claire : création">
+      <change afterPath="$PROJECT_DIR$/data/read_parquet.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dags/pipeline_facturation_dag.py" beforeDir="false" afterPath="$PROJECT_DIR$/dags/pipeline_facturation_dag.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dags/pipeline_facturation_dag_with_taskXcom.py" beforeDir="false" afterPath="$PROJECT_DIR$/dags/pipeline_facturation_dag_with_taskXcom.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,8 +17,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="Dockerfile" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -43,6 +43,9 @@
     &quot;accountId&quot;: &quot;fb1b6f39-da7a-496a-8653-710c45629311&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/dags/pipeline_facturation_dag_with_taskXcom.py" root0="SKIP_INSPECTION" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -216,7 +219,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773062435547</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Premier DAG simple MAJ&#10;Second DAG avec prise en charge de task et séparation pour une gestion des logs plus claire : création">
+      <option name="closed" value="true" />
+      <created>1773132200286</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1773132200286</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -244,6 +255,7 @@
     <MESSAGE value="Ajout de l'arborescence" />
     <MESSAGE value="Modification de l'arborescence&#10;Ajout de Airflow et Docker" />
     <MESSAGE value="Modification de l'arborescence&#10;MAJ de Airflow et Docker" />
-    <option name="LAST_COMMIT_MESSAGE" value="Modification de l'arborescence&#10;MAJ de Airflow et Docker" />
+    <MESSAGE value="Premier DAG simple MAJ&#10;Second DAG avec prise en charge de task et séparation pour une gestion des logs plus claire : création" />
+    <option name="LAST_COMMIT_MESSAGE" value="Premier DAG simple MAJ&#10;Second DAG avec prise en charge de task et séparation pour une gestion des logs plus claire : création" />
   </component>
 </project>

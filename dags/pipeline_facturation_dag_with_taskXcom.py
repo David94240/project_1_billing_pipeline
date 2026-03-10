@@ -9,28 +9,29 @@ OUTPUT_FILE = f"{DATA_PATH}/factures_propres.csv"
 
 
 @dag(
-    dag_id="pipeline_facturation",
+    dag_id="pipeline_facturation_task",
     start_date=datetime(2023, 1, 1),
     schedule=None,
     catchup=False,
     tags=["facturation", "data_pipeline"]
 )
 
-def pipeline_facturation():
-
+def pipeline_facturation_task():
     @task
     def extract_data():
-        logging.info("Chargement du fichier CSV")
-
         df = pd.read_csv(INPUT_FILE)
 
         logging.info(f"{len(df)} lignes chargées")
 
-        return df
+        temp_file = f"{DATA_PATH}/factures_raw.parquet"
 
+        df.to_parquet(temp_file)
+
+        return temp_file
 
     @task
-    def clean_data(df):
+    def clean_data(file_path):
+        df = pd.read_parquet(file_path)
 
         df['date_facture'] = df['date_facture'].replace(r'^\s*$', pd.NaT, regex=True)
         df['date_facture'] = df['date_facture'].fillna(pd.Timestamp(datetime.now().date()))
@@ -44,28 +45,28 @@ def pipeline_facturation():
 
         df['montant_TTC'] = df['montant_HT'] * (1 + df['taux_TVA'])
 
-        logging.info("Nettoyage terminé")
+        output = f"{DATA_PATH}/factures_clean.parquet"
 
-        return df
+        df.to_parquet(output)
 
+        return output
 
     @task
-    def validate_data(df):
+    def validate_data(file_path):
+        df = pd.read_parquet(file_path)
 
         if not all(df['montant_TTC'] > df['montant_HT']):
-            raise ValueError("Validation échouée : montant_TTC <= montant_HT")
+            raise ValueError("Validation échouée")
 
-        logging.info("Validation réussie")
-
-        return df
-
+        return file_path
 
     @task
-    def save_data(df):
+    def save_data(file_path):
+        df = pd.read_parquet(file_path)
 
         df.to_csv(OUTPUT_FILE, index=False)
 
-        logging.info(f"Données sauvegardées dans {OUTPUT_FILE}")
+        logging.info("Sauvegarde terminée")
 
 
     # Orchestration
@@ -75,4 +76,4 @@ def pipeline_facturation():
     save_data(validated)
 
 
-pipeline_facturation()
+pipeline_facturation_task()
