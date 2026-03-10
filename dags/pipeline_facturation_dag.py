@@ -5,82 +5,62 @@ import pandas as pd
 import logging
 from pathlib import Path
 
-# Chemin vers les fichiers (adapte selon ta structure)
+# Chemins adaptés à l'environnement Docker
 DATA_PATH = "/opt/airflow/data"
 INPUT_FILE = f"{DATA_PATH}/factures_brutes.csv"
 OUTPUT_FILE = f"{DATA_PATH}/factures_propres.csv"
 LOG_FILE = f"{DATA_PATH}/pipeline.log"
 
+# Fonction pour charger les données
+def load_data(filepath):
+    return pd.read_csv(filepath, parse_dates=['date_facture'])
 
-# ----------------------------------------------------------------
-# ------------ DEBUT DE LA FONCTION CLEAN DATA -------------------
-# ----------------------------------------------------------------
-# Fonction de nettoyage (copie de ton code existant)
-def clean_data(df):
-    """
-    Nettoie les données de facturation.
-    """
+# Fonction de nettoyage (adaptée pour Airflow)
+def clean_data():
+    # Charger les données
+    df = load_data(INPUT_FILE)
 
-    # Log initial count of duplicates in the incoming DataFrame
+    # Configuration des logs
+    logging.basicConfig(
+        filename=LOG_FILE,
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s'
+    )
+
+    # Log initial count of duplicates
     initial_duplicates = df.duplicated(subset=['id_facture'], keep=False).sum()
-    logging.info(f"Début du nettoyage: {initial_duplicates} doublons initiaux détectés sur id_facture avant tout traitement.")
+    logging.info(f"Début du nettoyage: {initial_duplicates} doublons initiaux détectés sur id_facture.")
 
-    # 1. Compter les montants négatifs/manquants AVANT suppression
+    # 1. Suppression des montants HT invalides
     montants_invalides = df[df['montant_HT'].isna() | (df['montant_HT'] < 0)]
+    df = df[(df['montant_HT'].notna()) & (df['montant_HT'] >= 0)]
     logging.info(f"Suppression de {len(montants_invalides)} lignes avec montants invalides.")
 
     # 2. Dates manquantes
-    # Convertir explicitement les chaînes vides ou avec seulement des espaces en pd.NaT
     df['date_facture'] = df['date_facture'].replace(r'^\s*$', pd.NaT, regex=True)
-    date_facturation_empty = df[df['date_facture'].isna()]
-    logging.info(f"Nombre de lignes avec date_facture vide : {len(date_facturation_empty)}")
     df['date_facture'] = df['date_facture'].fillna(pd.Timestamp(datetime.now().date()))
+    logging.info(f"Remplacement des dates manquantes par la date du jour.")
 
-    # 3. Suppression des montants HT invalides
-    montant_HT_invalid = df[df['montant_HT'].isna() | (df['montant_HT'] < 0)]
-    df = df[(df['montant_HT'].notna()) & (df['montant_HT'] >= 0)]
-    logging.info(f"Suppression de {len(montant_HT_invalid)} lignes avec montants HT invalides.")
-
-    # Suppression des taux_TVA non renseigner et mis à jour des logs
-    taux_tva_missing_count = df['taux_TVA'].isna().sum() # Compter avant la suppression
+    # 3. Suppression des taux_TVA manquants
+    taux_tva_missing_count = df['taux_TVA'].isna().sum()
     df = df[df['taux_TVA'].notna()]
-    logging.info(f"Suppression de {taux_tva_missing_count} lignes avec taux_TVA non renseigner.")
+    logging.info(f"Suppression de {taux_tva_missing_count} lignes avec taux_TVA non renseigné.")
 
     # 4. Normalisation des codes d'actes
     df['code_acte'] = df['code_acte'].str.replace('-', '').str.upper()
-    logging.info(
-        f"Normalisation des codes d'actes en majuscules et sans tirets. Nombre total d'actes uniques après normalisation : {df['code_acte'].nunique()}.")
+    logging.info(f"Normalisation des codes d'actes. Nombre d'actes uniques: {df['code_acte'].nunique()}.")
 
-    # 5. Suppression des doublons qui pourrait rester normalement est à 0
+    # 5. Suppression des doublons
     doublons = df.duplicated(subset=['id_facture'], keep='first').sum()
     df = df.drop_duplicates(subset=['id_facture'], keep='first')
     logging.info(f"Suppression de {doublons} doublons sur id_facture.")
 
-    # 6. Ajout d'une colonne calcul du montant_TTC
-    df['montant_TTC'] = df['montant_HT'] * (1 + df['taux_TVA']).round(2)
+    # 6. Calcul du montant_TTC
+    df['montant_TTC'] = (df['montant_HT'] * (1 + df['taux_TVA'])).round(2)
 
-    # 7. Validation : montant_TTC doit être > montant_HT
-    assert all(df['montant_TTC'] > df['montant_HT']), "Erreur : montant_TTC <= montant_HT pour certaines lignes."
-    logging.info("Validation réussie : montant_TTC > montant_HT pour toutes les lignes.")
-
-    return df
-
-if __name__ == "__main__":
-    input_file = "factures_brutes.csv"
-    output_file = "factures_propres.csv"
-
-    # Chargement et nettoyage
-    df_brut = load_data(input_file)
-    logging.info(f"Chargement de {len(df_brut)} lignes depuis {input_file}.")
-
-    df_propre = clean_data(df_brut)
-    df_propre.to_csv(output_file, index=False)
-    logging.info(f"Pipeline terminé. Résultat sauvegardé dans {output_file}.")
-
-    # ... (ton code de nettoyage existant) ...
-    #----------------------------------------------------------------
-    #------------ FIN DE LA FONCTION CLEAN DATA ---------------------
-    #----------------------------------------------------------------
+    # 7. Validation
+    assert all(df['montant_TTC'] > df['montant_HT']), "Erreur: montant_TTC <= montant_HT pour certaines lignes."
+    logging.info("Validation réussie: montant_TTC > montant_HT.")
 
     # Sauvegarde du résultat
     df.to_csv(OUTPUT_FILE, index=False)
@@ -99,16 +79,13 @@ dag = DAG(
     'pipeline_facturation',
     default_args=default_args,
     description='Pipeline de nettoyage des données de facturation EEG/Neuro',
-    schedule_interval=None,  # Déclenché manuellement pour l'instant
+    schedule_interval=None,
     catchup=False,
 )
 
 # Tâche de nettoyage
 clean_task = PythonOperator(
     task_id='nettoyage_donnees_facturation',
-    python_callable=clean_data,
+    python_callable=clean_data,  # Appelle la fonction SANS argument
     dag=dag,
 )
-
-# Définition de l'ordre des tâches
-clean_task
