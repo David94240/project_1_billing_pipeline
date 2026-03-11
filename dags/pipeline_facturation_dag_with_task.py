@@ -65,8 +65,10 @@ def pipeline_facturation_task():
         df = df.drop_duplicates(subset=['id_facture'], keep='first')
 
         # Calcul du montant_TTC :
-        df['montant_TTC'] = df['montant_HT'] * (1 + df['taux_TVA'])
-        df['montant_TTC'] = pd.to_numeric(df['montant_TTC'], errors="coerce")
+        # df["taux_TVA"] = pd.to_numeric(df["taux_TVA"], errors="coerce") (déjà fait ligne 59)
+        # normalisation si taux en %
+        df.loc[df["taux_TVA"] > 1, "taux_TVA"] = df["taux_TVA"] / 100
+        df["montant_TTC"] = df["montant_HT"] * (1 + df["taux_TVA"])
 
         # Chargement des données modifié dans le "output" :
         output = f"{DATA_PATH}/factures_clean.parquet"
