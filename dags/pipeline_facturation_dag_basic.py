@@ -76,7 +76,7 @@ default_args = {
 }
 
 dag = DAG(
-    'pipeline_facturation',
+    'pipeline_facturation_basic',
     default_args=default_args,
     description='Pipeline de nettoyage des données de facturation EEG/Neuro',
     schedule_interval=None,
